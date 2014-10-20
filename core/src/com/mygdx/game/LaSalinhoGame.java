@@ -4,12 +4,12 @@ import com.badlogic.gdx.Game;
 
 public class LaSalinhoGame extends Game {
 
-	public GameScrenn game_screen;
+	public GameScreen gameScreen;
 
 	@Override
 	public void create() {
-		game_screen = new GameScrenn(this);
+		gameScreen = new GameScreen(this);
 
-		setScreen(game_screen);
+		setScreen(gameScreen);
 	}
 }
