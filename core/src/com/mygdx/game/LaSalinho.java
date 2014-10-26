@@ -31,7 +31,7 @@ public class LaSalinho {
 	Animation jump;
 	Animation down;
 	Animation walk;
-	float stateTime = 0;
+	public float stateTime = 0;
 
 	public LaSalinho() {
 		texture = new Texture(Gdx.files.internal("LasallinhoSprite.png"));
