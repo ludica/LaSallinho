@@ -1,0 +1,17 @@
+{
+    "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+        "title": { "file": "fontes/kraash_48.fnt" },
+        "menu_text": { "file": "fontes/kraash_18.fnt" }
+    },
+    
+    "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+        "title": { "font": title },
+        "menu_text": { "font": menu_text }
+    },
+    
+    com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+    	default: { down: buttonSquare_brown_pressed, up: buttonSquare_brown, font: menu_text },
+    	toggle: { down: buttonSquare_brown_pressed, up: buttonSquare_brown, font: menu_text }
+	}
+    
+ }

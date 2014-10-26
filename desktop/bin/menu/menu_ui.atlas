@@ -1,0 +1,166 @@
+
+menu_ui.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+buttonLong_brown
+  rotate: false
+  xy: 1, 78
+  size: 190, 49
+  orig: 190, 49
+  offset: 0, 0
+  index: -1
+buttonLong_brown_pressed
+  rotate: false
+  xy: 1, 31
+  size: 190, 45
+  orig: 190, 45
+  offset: 0, 0
+  index: -1
+panel_beige
+  rotate: false
+  xy: 193, 27
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+panel_brown
+  rotate: false
+  xy: 295, 27
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+panelInset_beige
+  rotate: false
+  xy: 397, 33
+  size: 93, 94
+  orig: 93, 94
+  offset: 0, 0
+  index: -1
+panelInset_brown
+  rotate: false
+  xy: 492, 33
+  size: 93, 94
+  orig: 93, 94
+  offset: 0, 0
+  index: -1
+buttonSquare_beige
+  rotate: false
+  xy: 587, 78
+  size: 45, 49
+  orig: 45, 49
+  offset: 0, 0
+  index: -1
+buttonSquare_brown
+  rotate: false
+  xy: 634, 78
+  size: 45, 49
+  orig: 45, 49
+  offset: 0, 0
+  index: -1
+buttonSquare_beige_pressed
+  rotate: false
+  xy: 681, 82
+  size: 45, 45
+  orig: 45, 45
+  offset: 0, 0
+  index: -1
+buttonSquare_brown_pressed
+  rotate: false
+  xy: 728, 82
+  size: 45, 45
+  orig: 45, 45
+  offset: 0, 0
+  index: -1
+cursorHand_beige
+  rotate: false
+  xy: 1, 1
+  size: 27, 28
+  orig: 27, 28
+  offset: 0, 0
+  index: -1
+buttonRound_beige
+  rotate: false
+  xy: 587, 38
+  size: 35, 38
+  orig: 35, 38
+  offset: 0, 0
+  index: -1
+buttonRound_brown
+  rotate: false
+  xy: 775, 89
+  size: 35, 38
+  orig: 35, 38
+  offset: 0, 0
+  index: -1
+arrowBeige_left
+  rotate: false
+  xy: 30, 8
+  size: 22, 21
+  orig: 22, 21
+  offset: 0, 0
+  index: -1
+arrowBeige_right
+  rotate: false
+  xy: 624, 55
+  size: 22, 21
+  orig: 22, 21
+  offset: 0, 0
+  index: -1
+arrowBrown_left
+  rotate: false
+  xy: 812, 106
+  size: 22, 21
+  orig: 22, 21
+  offset: 0, 0
+  index: -1
+arrowBrown_right
+  rotate: false
+  xy: 54, 8
+  size: 22, 21
+  orig: 22, 21
+  offset: 0, 0
+  index: -1
+barGreen_horizontalMid
+  rotate: false
+  xy: 648, 58
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+iconCircle_brown
+  rotate: false
+  xy: 836, 110
+  size: 17, 17
+  orig: 17, 17
+  offset: 0, 0
+  index: -1
+iconCheck_bronze
+  rotate: false
+  xy: 624, 38
+  size: 16, 15
+  orig: 16, 15
+  offset: 0, 0
+  index: -1
+iconCross_brown
+  rotate: false
+  xy: 812, 89
+  size: 16, 15
+  orig: 16, 15
+  offset: 0, 0
+  index: -1
+barGreen_horizontalLeft
+  rotate: false
+  xy: 78, 11
+  size: 9, 18
+  orig: 9, 18
+  offset: 0, 0
+  index: -1
+barGreen_horizontalRight
+  rotate: false
+  xy: 668, 58
+  size: 9, 18
+  orig: 9, 18
+  offset: 0, 0
+  index: -1
