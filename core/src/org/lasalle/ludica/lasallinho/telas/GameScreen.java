@@ -2,6 +2,9 @@ package org.lasalle.ludica.lasallinho.telas;
 
 import java.util.ArrayList;
 
+import org.lasalle.ludica.lasallinho.atores.Item;
+import org.lasalle.ludica.lasallinho.fabricas.ItemFactory;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -17,7 +20,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Constantes;
 import com.mygdx.game.Inimigo;
-import com.mygdx.game.Item;
 import com.mygdx.game.LaSalinho;
 import com.mygdx.game.LaSalinhoGame;
 
@@ -29,11 +31,16 @@ public class GameScreen implements Screen {
 	public TiledMapTileLayer layerItens;
 	public TiledMapTileLayer layerTeleporte;
 	public TiledMapTileLayer layerInimigos;
+	
 	public LaSalinhoGame lsGame;
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
 	public LaSalinho laSalinho;
-	public ArrayList<Item> allItens = new ArrayList<Item>();
+	
+	private int biblias;
+	private int bibliasColetadas;
+	private int pontos;
+	public ArrayList<Item> itens = new ArrayList<Item>();
 	public ArrayList<Inimigo> allInimigos = new ArrayList<Inimigo>();
 	public int backgroundLayer[] = {0,1};
 	public int foregroundLayer[] = {2};
@@ -52,12 +59,9 @@ public class GameScreen implements Screen {
 		laSalinho = new LaSalinho();
 		laSalinho.bounds.x = Constantes.X_INICIAL;
 		laSalinho.bounds.y = Constantes.Y_INICIAL;
+		pontos = 0;
 		criarItens();
 		criarInimigos();
-	}
-	
-	public GameScreen(){
-		this(null);
 	}
 
 	@Override
@@ -89,10 +93,14 @@ public class GameScreen implements Screen {
 		renderer.render(backgroundLayer);
 		batch.begin();
 		batch.draw(frame, laSalinho.bounds.x, laSalinho.bounds.y, laSalinho.bounds.width, laSalinho.bounds.height);
-		for(Item item : allItens){
-			item.coletar(laSalinho.bounds);
-			if(!item.isColetado){
-				batch.draw(item.image, item.bounds.x, item.bounds.y, item.bounds.width, item.bounds.height);
+		int p;
+		for(Item item : itens){
+			p = item.coletar(laSalinho.bounds);
+			pontos += p;
+			bibliasColetadas += p == ItemFactory.BIBLIA_PTS ? 1 : 0;
+			if(!item.foiColetado()){
+				Rectangle b = item.getBounds();
+				batch.draw(item.getSprite(), b.x, b.y, b.width, b.height);
 			}
 		}
 		for(Inimigo inimigo : allInimigos){
@@ -113,12 +121,12 @@ public class GameScreen implements Screen {
 		}
 		if(LaSalinho.vidas == 0){
 			LaSalinho.vidas = 5;
-			LaSalinho.pontos = 0;
-			Item.hollybookColetado = 0;
+			pontos = 0;
+			biblias = 0;
 			criarItens();
 			lsGame.setScreen(new GameOver(lsGame));
 		}
-		System.out.println("Vidas: "+LaSalinho.vidas+" Pontos: "+LaSalinho.pontos+" Biblias: "+Item.hollybookColetado+"/"+Item.hollybookTotal);
+		System.out.println("Vidas: "+LaSalinho.vidas+" Pontos: "+pontos+" Biblias: "+bibliasColetadas+"/"+biblias);
 	}
 
 	@Override
@@ -173,20 +181,17 @@ public class GameScreen implements Screen {
 	}
 	
 	public void criarItens(){
-		allItens.clear();
-		Item.hollybookTotal = 0;
+		ItemFactory fabrica = new ItemFactory();
+		itens.clear();
+		int itemId;
+		biblias = 0;
 		for (int i = 0; i < Constantes.TILESHORIZONTAL; i++) {
 			for (int j = 0; j < Constantes.TILESVERTICAL; j++) {
 				if (layerItens.getCell(i, j) != null) {
-					if (layerItens.getCell(i, j).getTile().getId() == Constantes.IDITEM1) {
-						Item item = new Item((int) i * Constantes.TILESCALE, (int) j * Constantes.TILESCALE);
-						allItens.add(item);
-					}
-					if (layerItens.getCell(i, j).getTile().getId() == Constantes.IDITEM2) {
-						Item item = new Item((int) i * Constantes.TILESCALE, (int) j * Constantes.TILESCALE, 100);
-						allItens.add(item);
-						Item.hollybookTotal++;
-					}
+					itemId = layerItens.getCell(i, j).getTile().getId();
+					Item item = fabrica.criarItem(itemId, i * Constantes.TILESCALE, j * Constantes.TILESCALE);
+					biblias += itemId == ItemFactory.BIBLIA ? 1 : 0;
+					itens.add(item);
 				}
 			}
 		}
