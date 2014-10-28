@@ -64,6 +64,10 @@ public class GameScreen implements Screen {
 		criarInimigos();
 	}
 
+    GameScreen() {
+        this(null);
+    }
+
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1F, 1F, 1F, 1F);
