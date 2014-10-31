@@ -1,0 +1,6 @@
+.metadata/
+*.class
+*.class
+.settings/gradle/org.springsource.ide.eclipse.gradle.core.prefs
+*.classpath
+*.class
