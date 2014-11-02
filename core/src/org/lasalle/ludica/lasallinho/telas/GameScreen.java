@@ -93,7 +93,7 @@ public class GameScreen implements Screen {
 		}else{
 			if(!frame.isFlipX()) frame.flip(true, false);
 		}
-
+		
 		renderer.render(backgroundLayer);
 		batch.begin();
 		batch.draw(frame, laSalinho.bounds.x, laSalinho.bounds.y, laSalinho.bounds.width, laSalinho.bounds.height);

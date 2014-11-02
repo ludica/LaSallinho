@@ -1,10 +1,10 @@
 package org.lasalle.ludica.lasallinho.telas;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -12,14 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.game.GameScreen;
+import com.mygdx.game.LaSalinhoGame;
 
 public class MainMenu implements Screen{
 		private final String TITULO = "As Aventuras de La Sallinho";
 		private final String JOGAR = "Jogar";
 		private final String OPCOES = "Opcoes";
 		private final String SAIR = "Sair";
-	
+		
+		private LaSalinhoGame lsGame;
 		private Stage stage;
 		private Skin skin;
 		private Table tabela;
@@ -30,10 +31,11 @@ public class MainMenu implements Screen{
 		private TextButton btnOpcoes;
 		private TextButton btnSair;
 		
-	public MainMenu(){
-		stage = new Stage();
+	public MainMenu(LaSalinhoGame game){
+		lsGame = game;
+		stage = lsGame.stage;
 		skin = new Skin(Gdx.files.internal("menu/menu_ui.json"), new TextureAtlas(Gdx.files.internal("menu/menu_ui.atlas")));
-		Gdx.input.setInputProcessor(stage);
+		
 		
 		tabela = new Table();
 		
@@ -69,7 +71,8 @@ public class MainMenu implements Screen{
 		btnPlay.addListener(new ClickListener(){
 			@Override 
             public void clicked(InputEvent event, float x, float y){
-				((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen());
+				//((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen());
+				lsGame.setScreen(new GameScreen(lsGame));
             }
 		});
 		
@@ -89,8 +92,11 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void dispose() {
-		stage.dispose();
+		//stage.dispose();
 		skin.dispose();
+		for(Actor actor : stage.getActors()){
+			actor.remove();
+		}
 	}
 	
 	@Override
