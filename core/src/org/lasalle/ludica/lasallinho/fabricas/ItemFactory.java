@@ -12,8 +12,8 @@ public class ItemFactory {
 	public static final int LIVRO_PTS = 50;
 	public static final int BIBLIA_PTS = 100;
 	
-	public static final String LIVRO_TEXTURA = "sprites/livro.png";
-	public static final String BIBLIA_TEXTURA = "sprites/biblia.png";
+	public static final String LIVRO_TEXTURA = "itens/star_bronze.png";
+	public static final String BIBLIA_TEXTURA = "itens/star_gold.png";
 	
 	public Item criarItem(int id, int posX, int posY){
 		Item item;

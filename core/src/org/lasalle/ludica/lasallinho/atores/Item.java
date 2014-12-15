@@ -25,8 +25,8 @@ public class Item {
 		this.id = id;
 		this.textura = textura;
 		sprite = new Sprite(textura);
-		sprite.setSize(Constantes.TILESCALE, Constantes.TILESCALE);		
-		bounds = new Rectangle(posX,posY,sprite.getWidth(),sprite.getHeight());
+		sprite.setSize(31, 31);
+		bounds = new Rectangle(posX+((Constantes.TILESCALE-31)/2),posY+((Constantes.TILESCALE-31)/2),sprite.getWidth(),sprite.getHeight());
 		String somPath = id == 1 ? SOM_LIVRO : SOM_BIBLIA;
 		som = Gdx.audio.newSound(Gdx.files.internal(somPath));
 		
@@ -41,7 +41,7 @@ public class Item {
 			coletado = true;
 			p = this.pontos;
 			som.play();
-			// é necessário dar dispose() no som!!! -Felipe
+			// ï¿½ necessï¿½rio dar dispose() no som!!! -Felipe
 		}
 		return p;
 	}
@@ -62,7 +62,7 @@ public class Item {
 		return sprite;
 	}
 	
-	//para limpar a memória
+	//para limpar a memï¿½ria
 	public Texture getTextura(){
 		return textura;
 	}
