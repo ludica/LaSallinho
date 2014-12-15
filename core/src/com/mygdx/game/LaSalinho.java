@@ -41,7 +41,7 @@ public class LaSalinho {
 		down = new Animation(0, regions[6]);
 		walk = new Animation(0.1f, regions[1], regions[2], regions[3], regions[4]);
 		walk.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);// 
-		bounds = new Rectangle(Constantes.X_INICIAL, Constantes.Y_INICIAL, 16, 26);
+		bounds = new Rectangle(Constantes.X_INICIAL, Constantes.Y_INICIAL, Constantes.TILESCALE, (236f/146f)*Constantes.TILESCALE);
 	}
 
 	public void Mover(TiledMapTileLayer layerCollision) {
