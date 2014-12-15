@@ -50,7 +50,7 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Constantes.LARGURA_TELA, Constantes.ALTURA_TELA);
 		batch = new SpriteBatch();
-		map = new TmxMapLoader().load("Mapa.tmx");
+		map = new TmxMapLoader().load("Grass.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map);
 		layerCollision = (TiledMapTileLayer) map.getLayers().get("Collision");
 		layerItens = (TiledMapTileLayer) map.getLayers().get("Itens");
@@ -206,7 +206,7 @@ public class GameScreen implements Screen {
 		for (int i = 0; i < Constantes.TILESHORIZONTAL; i++) {
 			for (int j = 0; j < Constantes.TILESVERTICAL; j++) {
 				if (layerInimigos.getCell(i, j) != null) {
-					Inimigo inimigo = new Inimigo((int) i * Constantes.TILESCALE, (int) j * Constantes.TILESCALE, MathUtils.random(1f,2.5f));
+					Inimigo inimigo = new Inimigo((int) i * Constantes.TILESCALE, (int) j * Constantes.TILESCALE, MathUtils.random(4f,7f));
 					allInimigos.add(inimigo);
 				}
 			}
