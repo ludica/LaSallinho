@@ -31,7 +31,7 @@ public class LaSalinho {
 	Animation jump;
 	Animation down;
 	Animation walk;
-	public float stateTime = 0;
+	private float stateTime = 0;
 
 	public LaSalinho() {
 		texture = new Texture(Gdx.files.internal("LasallinhoSprite.png"));
@@ -179,15 +179,15 @@ public class LaSalinho {
 		
 		switch (state){
 		case STANDING:
-			return stand.getKeyFrame(stateTime);
+			return stand.getKeyFrame(getStateTime());
 		case WALKING:
-			return walk.getKeyFrame(stateTime);
+			return walk.getKeyFrame(getStateTime());
 		case JUMPING:
-			return jump.getKeyFrame(stateTime);
+			return jump.getKeyFrame(getStateTime());
 		case DOWNING:
-			return down.getKeyFrame(stateTime);
+			return down.getKeyFrame(getStateTime());
 		default:
-			return stand.getKeyFrame(stateTime);
+			return stand.getKeyFrame(getStateTime());
 		}
 	}
 	
@@ -229,5 +229,13 @@ public class LaSalinho {
 
 	public static void PerdeVida() {
 		LaSalinho.vidas -= 1;
+	}
+
+	public float getStateTime() {
+		return stateTime;
+	}
+
+	public void setStateTime(float stateTime) {
+		this.stateTime = stateTime;
 	}
 }

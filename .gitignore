@@ -6,3 +6,12 @@
 *.class
 *.class
 *.class
+*.class
+desktop/bin/enemies/slime.png
+desktop/bin/Grass.tmx
+desktop/bin/itens/star_bronze.png
+desktop/bin/itens/star_gold.png
+desktop/bin/Mapa.tmx
+desktop/bin/itens/star_silver.png
+desktop/bin/tiles_spritesheet.png
+desktop/bin/Mapa.tmx
