@@ -1,16 +1,25 @@
 {
-    "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+	com.badlogic.gdx.graphics.Color: {
+	    skyblue: { hex: 489affff }
+	},
+
+    com.badlogic.gdx.graphics.g2d.BitmapFont: {
         "title": { "file": "fontes/kraash_48.fnt" },
-        "menu_text": { "file": "fontes/kraash_18.fnt" }
+        "menu_text": { "file": "fontes/kraash_18.fnt" },
+        "pequena": { "file": "fontes/sspb-18.fnt" },
+        "media": { "file": "fontes/sspb-24.fnt" },
+        "grande": { "file": "fontes/sspb-32.fnt" },
+        "x-grande": { "file": "fontes/sspb-48.fnt" }
     },
     
-    "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
-        "title": { "font": title },
-        "menu_text": { "font": menu_text }
+    com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+        "title": { "font": x-grande, fontColor: skyblue },
+        "carregando": { "font": grande, fontColor: skyblue },
+        "menu_text": { "font": pequena }
     },
     
     com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
-    	default: { down: buttonSquare_brown_pressed, up: buttonSquare_brown, font: menu_text },
+    	default: { down: buttonLong_brown_pressed, up: buttonLong_brown, font: grande },
     	toggle: { down: buttonSquare_brown_pressed, up: buttonSquare_brown, font: menu_text }
 	}
     
