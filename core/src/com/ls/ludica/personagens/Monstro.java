@@ -2,8 +2,6 @@ package com.ls.ludica.personagens;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,18 +14,15 @@ import com.ls.ludica.game.Constantes;
  */
 
 public class Monstro {
-	private Texture texture;
-	public Rectangle bounds;
-	public Sprite image;
-	public float velocidade;
-	public float direcao = 1;
-	public float largura = 0;
+	private Rectangle bounds;
+	private Sprite sprite;
+	private float velocidade;
+	private float direcao = 1;
+	private float largura = 0;
 
-	public Monstro(float x, float y, float velocidade) {
-		this.texture = new Texture(Gdx.files.internal("enemies/slime.png"));
-		this.image = new Sprite(texture);
-		image.setSize(50f/28f*50f, 50f);
-		this.bounds = new Rectangle(x, y, image.getWidth(), image.getHeight());
+	public Monstro(Sprite sprite, Rectangle bounds, float velocidade) {
+		this.sprite = sprite;
+		this.bounds = bounds;
 		this.velocidade = velocidade;
 	}
 	
@@ -40,11 +35,11 @@ public class Monstro {
 	public void mover(TiledMapTileLayer layerCollision) {
 		if(direcao > 0){
 			largura = bounds.width;
-			if(!image.isFlipX()) image.flip(true, false);
+			if(!sprite.isFlipX()) sprite.flip(true, false);
 		}
 		if(direcao < 0){
 			largura = 0;
-			if(image.isFlipX()) image.flip(true, false);
+			if(sprite.isFlipX()) sprite.flip(true, false);
 		}
 		ArrayList<Rectangle> parede = new ArrayList<Rectangle>();
 		parede.clear();
@@ -97,9 +92,13 @@ public class Monstro {
 			}
 		}
 	}
-	
+
 	public Rectangle getBounds() {
-		// TODO Auto-generated method stub
 		return bounds;
 	}
+
+	public Sprite getSprite() {
+		return sprite;
+	}
+	
 }

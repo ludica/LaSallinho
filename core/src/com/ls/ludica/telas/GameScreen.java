@@ -15,13 +15,12 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.ls.ludica.fabricas.ItemFactory;
 import com.ls.ludica.game.AsAventurasDeLaSallinho;
 import com.ls.ludica.game.Constantes;
 import com.ls.ludica.personagens.Fase;
+import com.ls.ludica.personagens.Item;
 import com.ls.ludica.personagens.LaSalinho;
 import com.ls.ludica.personagens.Monstro;
-import com.ls.ludica.personagens.Item;
 
 /**
  * Classe que vai rodar a fase selecionada na tela "SelecionarFase" 
@@ -50,8 +49,8 @@ public class GameScreen implements Screen {
 	
 	public GameScreen(AsAventurasDeLaSallinho game) {
 		this.lsGame = game;
-		map = new TmxMapLoader().load("Grass.tmx");
 		
+		map = new TmxMapLoader().load("Grass.tmx");
 		fase = new Fase(map);
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
@@ -70,6 +69,7 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(85/255f,170/229f,255/255f, 0.8f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		// Revisar
 		if(colidiu){
 			try {
 				Sound som = Gdx.audio.newSound(Gdx.files.internal("sons/morte.ogg"));
@@ -122,7 +122,7 @@ public class GameScreen implements Screen {
 		for(Item item : fase.getItemLista()){
 			p = item.coletar(laSalinho.bounds);
 			pontos += p;
-			bibliasColetadas += p == ItemFactory.BIBLIA_PTS ? 1 : 0;
+			//bibliasColetadas += p == ItemFactory.BIBLIA_PTS ? 1 : 0;
 			if(!item.foiColetado()){
 				Rectangle b = item.getBounds();
 				batch.draw(item.getSprite(), b.x, b.y, b.width, b.height);
@@ -132,10 +132,11 @@ public class GameScreen implements Screen {
 		 * Checagem para colisao com monstros
 		 */
 		for(Monstro inimigo : fase.getMob()){
-			batch.draw(inimigo.image, inimigo.bounds.x, inimigo.bounds.y, inimigo.bounds.width, inimigo.bounds.height);
+			Rectangle bounds = inimigo.getBounds();
+			batch.draw(inimigo.getSprite(), bounds.x, bounds.y, bounds.width, bounds.height);
 			inimigo.gravidade(fase.getCamadaColisao());
 			inimigo.mover(fase.getCamadaColisao());
-			if(laSalinho.InimigoColide(inimigo.bounds)){
+			if(laSalinho.InimigoColide(bounds)){
 				colidiu = true;
 			}
 		}
@@ -159,7 +160,7 @@ public class GameScreen implements Screen {
 		// DEBUG
 		drawDebug(laSalinho.bounds,Color.GREEN);
 		for(Monstro i : fase.getMob())
-			drawDebug(i.bounds,Color.RED);
+			drawDebug(i.getBounds(),Color.RED);
 		//System.out.println("Vidas: "+LaSalinho.vidas+" Pontos: "+pontos+" Biblias: "+bibliasColetadas+"/"+biblias);
 	}
 

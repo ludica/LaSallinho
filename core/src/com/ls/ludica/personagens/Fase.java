@@ -5,10 +5,9 @@ import java.util.List;
 
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.MathUtils;
-import com.ls.ludica.fabricas.ItemFactory;
+import com.ls.ludica.fabricas.FabricaItem;
+import com.ls.ludica.fabricas.FabricaMonstro;
 
 public class Fase {
 
@@ -19,7 +18,6 @@ public class Fase {
 	public final int LARGURA_BLOCO;
 	public final int ALTURA_BLOCO;
 	
-	private TiledMap mapa;
 	private TiledMapTileLayer camadaColisao;
 	private TiledMapTileLayer camadaItem;
 	private TiledMapTileLayer camadaTeleporte;
@@ -33,7 +31,6 @@ public class Fase {
 	private int camadaDaFrente[] = {2};
 	
 	public Fase(Map mapa){
-		
 		camadaColisao = (TiledMapTileLayer) mapa.getLayers().get("Collision");
 		camadaItem = (TiledMapTileLayer) mapa.getLayers().get("Itens");
 		camadaTeleporte = (TiledMapTileLayer) mapa.getLayers().get("Teleporte");
@@ -61,19 +58,20 @@ public class Fase {
 	 * 
 	 */
 	private void carregarListas(){
-		ItemFactory fabrica = new ItemFactory();
+		FabricaItem fabricaItem = new FabricaItem(LARGURA_BLOCO,ALTURA_BLOCO);
+		FabricaMonstro fabricaMonstro = new FabricaMonstro();
 		int itemId;
 		for(int i = 0; i <= LARGURA_MAPA; i++){
 			for(int j = 0; j <= ALTURA_MAPA; j++){
 				// Carregando os itens
 				if(camadaItem.getCell(i, j) != null){
 					itemId = camadaItem.getCell(i, j).getTile().getId();
-					Item item = fabrica.criarItem(itemId,i*LARGURA_BLOCO,j*ALTURA_BLOCO);
+					Item item = fabricaItem.criarItem(itemId, i * LARGURA_BLOCO, j * ALTURA_BLOCO);
 					itemLista.add(item);
 				}
 				// Carregando os monstros
 				if(camadaInimigo.getCell(i, j) != null){
-					Monstro inimigo = new Monstro((int) i * LARGURA_BLOCO, (int) j * ALTURA_BLOCO, MathUtils.random(4f,7f));
+					Monstro inimigo = fabricaMonstro.criarMonstro(0, i * LARGURA_BLOCO, j * ALTURA_BLOCO);
 					mob.add(inimigo);
 				}
 			}
