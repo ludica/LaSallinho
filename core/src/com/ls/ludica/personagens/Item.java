@@ -51,6 +51,9 @@ public class Item {
 	public boolean foiColetado(){
 		return coletado;
 	}
+	public void setNaoColetado(){
+		coletado = false;
+	}
 	
 	public int getPontos(){
 		return pontos;

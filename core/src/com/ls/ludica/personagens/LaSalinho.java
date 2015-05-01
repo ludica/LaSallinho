@@ -1,4 +1,4 @@
-package com.ls.ludica.game;
+package com.ls.ludica.personagens;
 
 import java.util.ArrayList;
 
@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.ls.ludica.game.Constantes;
 
 public class LaSalinho {
 	/*
@@ -26,13 +27,13 @@ public class LaSalinho {
 	public static boolean isMovendo = false;
 	public static float maxJump;
 
-	private Texture texture;
 	public Rectangle bounds;
 	
 	enum State {
 		STANDING, WALKING, JUMPING, DOWNING
 	}
 	State state = State.STANDING;
+	private TextureAtlas textureAtlas;
 	TextureRegion[] regions;
 	Animation stand;
 	Animation jump;
@@ -40,7 +41,7 @@ public class LaSalinho {
 	Animation walk;
 	// Usado para animacao
 	private float stateTime = 0;
-	private TextureAtlas textureAtlas;
+	
 
 	public LaSalinho() {
 		textureAtlas = new TextureAtlas(Gdx.files.internal("LaSallinho.pack"));
@@ -50,14 +51,8 @@ public class LaSalinho {
 		walk = new Animation(0.1f,textureAtlas.findRegion("lasallinho001"),
 				textureAtlas.findRegion("lasallinho002"),textureAtlas.findRegion("lasallinho003"),
 				textureAtlas.findRegion("lasallinho004"));
-		/*
-		texture = new Texture(Gdx.files.internal("LasallinhoSprite.png"));
-		regions = TextureRegion.split(texture, 146, 236)[0];
-		stand = new Animation(0, regions[0]);
-		jump = new Animation(0, regions[5]);
-		down = new Animation(0, regions[6]);
-		walk = new Animation(0.1f, regions[1], regions[2], regions[3], regions[4]);*/
-		walk.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);// 
+		walk.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
+		
 		bounds = new Rectangle(Constantes.X_INICIAL, Constantes.Y_INICIAL, Constantes.TILESCALE, (236f/146f)*Constantes.TILESCALE);
 	}
 

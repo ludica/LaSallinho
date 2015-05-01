@@ -1,7 +1,5 @@
 package com.ls.ludica.telas;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -14,16 +12,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.ls.ludica.fabricas.ItemFactory;
 import com.ls.ludica.game.AsAventurasDeLaSallinho;
 import com.ls.ludica.game.Constantes;
-import com.ls.ludica.game.Inimigo;
-import com.ls.ludica.game.LaSalinho;
+import com.ls.ludica.personagens.Fase;
+import com.ls.ludica.personagens.LaSalinho;
+import com.ls.ludica.personagens.Monstro;
 import com.ls.ludica.personagens.Item;
 
 /**
@@ -36,15 +33,13 @@ public class GameScreen implements Screen {
 	public static TiledMap map;
 	public static OrthogonalTiledMapRenderer renderer;
 	
-	public TiledMapTileLayer layerCollision;
-	public TiledMapTileLayer layerItens;
-	public TiledMapTileLayer layerTeleporte;
-	public TiledMapTileLayer layerInimigos;
+	private Fase fase;
 	
 	public AsAventurasDeLaSallinho lsGame;
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
 	public LaSalinho laSalinho;
+	private boolean colidiu = false;
 	
 	// Campo para debug 
 	private ShapeRenderer debugRenderer = new ShapeRenderer();
@@ -52,46 +47,50 @@ public class GameScreen implements Screen {
 	private int biblias;
 	private int bibliasColetadas;
 	private int pontos;
-	public ArrayList<Item> itens = new ArrayList<Item>();
-	public ArrayList<Inimigo> allInimigos = new ArrayList<Inimigo>();
-	public int backgroundLayer[] = {0,1};
-	public int foregroundLayer[] = {2};
 	
-	public GameScreen(AsAventurasDeLaSallinho game) {// create()
+	public GameScreen(AsAventurasDeLaSallinho game) {
 		this.lsGame = game;
+		map = new TmxMapLoader().load("Grass.tmx");
+		
+		fase = new Fase(map);
+		renderer = new OrthogonalTiledMapRenderer(map);
+		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Constantes.LARGURA_TELA, Constantes.ALTURA_TELA);
+		
 		batch = new SpriteBatch();
-		map = new TmxMapLoader().load("Grass.tmx");
-		renderer = new OrthogonalTiledMapRenderer(map);
-		layerCollision = (TiledMapTileLayer) map.getLayers().get("Collision");
-		layerItens = (TiledMapTileLayer) map.getLayers().get("Itens");
-		layerTeleporte = (TiledMapTileLayer) map.getLayers().get("Teleporte");
-		layerInimigos = (TiledMapTileLayer) map.getLayers().get("Inimigos");
+		
 		laSalinho = new LaSalinho();
 		laSalinho.bounds.x = Constantes.X_INICIAL;
 		laSalinho.bounds.y = Constantes.Y_INICIAL;
 		pontos = 0;
-		criarItens();
-		criarInimigos();
 	}
-
-    GameScreen() {
-        this(null);
-    }
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(85/255f,170/229f,255/255f, 0.8f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		if(colidiu){
+			try {
+				Sound som = Gdx.audio.newSound(Gdx.files.internal("sons/morte.ogg"));
+				som.play();
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			LaSalinho.PerdeVida();
+			laSalinho = new LaSalinho();
+			colidiu = false;
+		}
 		/*
 		 * Checagem das colisoes
 		 */
-		laSalinho.Mover(layerCollision);
-		laSalinho.Pular(layerCollision);
-		laSalinho.Gravidade(layerCollision);
+		laSalinho.Mover(fase.getCamadaColisao());
+		laSalinho.Pular(fase.getCamadaColisao());
+		laSalinho.Gravidade(fase.getCamadaColisao());
 		if (Gdx.input.isKeyPressed(Keys.S)) {
-			laSalinho.Teleporte(layerTeleporte);
+			laSalinho.Teleporte(fase.getCamadaTeleporte());
 		}
 
 		renderer.setView(camera);
@@ -110,7 +109,7 @@ public class GameScreen implements Screen {
 		/*
 		 * O mapa de demonstracao tem 3 camadas. As 2 primeiras são exibidas agora
 		 */
-		renderer.render(backgroundLayer);
+		renderer.render(fase.getCamadaDeFundo());
 		/*
 		 * Começo da "pintura" na tela
 		 */
@@ -120,7 +119,7 @@ public class GameScreen implements Screen {
 		/*
 		 * Checagem para colisao com itens
 		 */
-		for(Item item : itens){
+		for(Item item : fase.getItemLista()){
 			p = item.coletar(laSalinho.bounds);
 			pontos += p;
 			bibliasColetadas += p == ItemFactory.BIBLIA_PTS ? 1 : 0;
@@ -132,28 +131,19 @@ public class GameScreen implements Screen {
 		/*
 		 * Checagem para colisao com monstros
 		 */
-		for(Inimigo inimigo : allInimigos){
+		for(Monstro inimigo : fase.getMob()){
 			batch.draw(inimigo.image, inimigo.bounds.x, inimigo.bounds.y, inimigo.bounds.width, inimigo.bounds.height);
-			inimigo.gravidade(layerCollision);
-			inimigo.mover(layerCollision);
+			inimigo.gravidade(fase.getCamadaColisao());
+			inimigo.mover(fase.getCamadaColisao());
 			if(laSalinho.InimigoColide(inimigo.bounds)){
-				try {
-					Sound som = Gdx.audio.newSound(Gdx.files.internal("sons/morte.ogg"));
-					som.play();
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				LaSalinho.PerdeVida();
-				laSalinho = new LaSalinho();
+				colidiu = true;
 			}
 		}
 		batch.end();
 		/*
 		 * Renderizando a 3º camada
 		 */
-		renderer.render(foregroundLayer);
+		renderer.render(fase.getCamadaDaFrente());
 		
 		if (laSalinho.bounds.y < 0) {
 			LaSalinho.PerdeVida();
@@ -163,12 +153,12 @@ public class GameScreen implements Screen {
 			LaSalinho.vidas = 5;
 			pontos = 0;
 			biblias = 0;
-			criarItens();
+			fase.resetarListaItem();
 			lsGame.setScreen(new GameOver(lsGame));
 		}
 		// DEBUG
 		drawDebug(laSalinho.bounds,Color.GREEN);
-		for(Inimigo i : allInimigos)
+		for(Monstro i : fase.getMob())
 			drawDebug(i.bounds,Color.RED);
 		//System.out.println("Vidas: "+LaSalinho.vidas+" Pontos: "+pontos+" Biblias: "+bibliasColetadas+"/"+biblias);
 	}
@@ -239,44 +229,5 @@ public class GameScreen implements Screen {
 		debugRenderer.setColor(color);
 		debugRenderer.rect(bounds.x, bounds.y, bounds.width, bounds.height);
 		debugRenderer.end();
-	}
-	
-	/**
-	 * 
-	 * Carrega os itens da camada de itens do mapa para uma lista.
-	 * 
-	 */
-	public void criarItens(){
-		ItemFactory fabrica = new ItemFactory();
-		itens.clear();
-		int itemId;
-		biblias = 0;
-		for (int i = 0; i < Constantes.TILESHORIZONTAL; i++) {
-			for (int j = 0; j < Constantes.TILESVERTICAL; j++) {
-				if (layerItens.getCell(i, j) != null) {
-					itemId = layerItens.getCell(i, j).getTile().getId();
-					Item item = fabrica.criarItem(itemId, i * Constantes.TILESCALE, j * Constantes.TILESCALE);
-					biblias += itemId == ItemFactory.BIBLIA ? 1 : 0;
-					itens.add(item);
-				}
-			}
-		}
-	}
-	
-	/**
-	 * 
-	 * Carrega os monstros da camada de monstros do mapa para uma lista.
-	 * 
-	 */
-	public void criarInimigos(){
-		allInimigos.clear();
-		for (int i = 0; i < Constantes.TILESHORIZONTAL; i++) {
-			for (int j = 0; j < Constantes.TILESVERTICAL; j++) {
-				if (layerInimigos.getCell(i, j) != null) {
-					Inimigo inimigo = new Inimigo((int) i * Constantes.TILESCALE, (int) j * Constantes.TILESCALE, MathUtils.random(4f,7f));
-					allInimigos.add(inimigo);
-				}
-			}
-		}
 	}
 }

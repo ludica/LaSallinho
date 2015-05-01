@@ -1,4 +1,4 @@
-package com.ls.ludica.game;
+package com.ls.ludica.personagens;
 
 import java.util.ArrayList;
 
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.ls.ludica.game.Constantes;
 
 /**
  * 
@@ -14,7 +15,7 @@ import com.badlogic.gdx.math.Rectangle;
  *
  */
 
-public class Inimigo {
+public class Monstro {
 	private Texture texture;
 	public Rectangle bounds;
 	public Sprite image;
@@ -22,7 +23,7 @@ public class Inimigo {
 	public float direcao = 1;
 	public float largura = 0;
 
-	public Inimigo(float x, float y, float velocidade) {
+	public Monstro(float x, float y, float velocidade) {
 		this.texture = new Texture(Gdx.files.internal("enemies/slime.png"));
 		this.image = new Sprite(texture);
 		image.setSize(50f/28f*50f, 50f);
