@@ -55,7 +55,7 @@ public class GameScreen implements Screen {
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, Constantes.LARGURA_TELA, Constantes.ALTURA_TELA);
+		camera.setToOrtho(false, fase.LARGURA_BLOCO * 20, fase.ALTURA_BLOCO * 10);
 		
 		batch = new SpriteBatch();
 		
