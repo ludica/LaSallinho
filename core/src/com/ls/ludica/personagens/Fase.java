@@ -28,18 +28,22 @@ public class Fase {
 	
 	public float gravidade = 12;
 	
-	private int camadaDeFundo[] = {0,1};
-	private int camadaDaFrente[] = {2};
+	private int camadaAreaSecreta[] = {0,1};
+	private int camadaTampaSecreta[] = {2};
+	private int camadaDeFundo[] = {3,4};
+	private int camadaDaFrente[] = {5};
 	
 	// Hardcoded, o mapa deve fornecer essa informacao
 	public int xInicial;
 	public int yInicial;
 	
 	public Fase(Map mapa){
-		camadaColisao = (TiledMapTileLayer) mapa.getLayers().get("Collision");
-		camadaItem = (TiledMapTileLayer) mapa.getLayers().get("Itens");
-		camadaTeleporte = (TiledMapTileLayer) mapa.getLayers().get("Teleporte");
-		camadaInimigo = (TiledMapTileLayer) mapa.getLayers().get("Inimigos");
+		//camadaColisao = (TiledMapTileLayer) mapa.getLayers().get("Collision");
+		//camadaItem = (TiledMapTileLayer) mapa.getLayers().get("Itens");
+		//camadaTeleporte = (TiledMapTileLayer) mapa.getLayers().get("Teleporte");
+		//camadaInimigo = (TiledMapTileLayer) mapa.getLayers().get("Inimigos");
+		
+		camadaColisao = (TiledMapTileLayer) mapa.getLayers().get("colisao");
 		
 		MapProperties prop = mapa.getProperties();
 		// Largura e altura do mapa em numero de blocos
@@ -53,10 +57,10 @@ public class Fase {
 		LARGURA_MAPA = LARGURA_MAPA_EM_BLOCO * LARGURA_BLOCO;
 		ALTURA_MAPA = ALTURA_MAPA_EM_BLOCO * ALTURA_BLOCO;
 		
-		xInicial = LARGURA_BLOCO * 11;
-		yInicial = ALTURA_BLOCO * 17;
+		xInicial = LARGURA_BLOCO * 1;
+		yInicial = ALTURA_BLOCO * 6;
 		
-		carregarListas();
+		//carregarListas();
 		
 	}
 	
@@ -128,6 +132,14 @@ public class Fase {
 
 	public int[] getCamadaDaFrente() {
 		return camadaDaFrente;
+	}
+
+	public int[] getCamadaTampaSecreta() {
+		return camadaTampaSecreta;
+	}
+
+	public int[] getCamadaAreaSecreta() {
+		return camadaAreaSecreta;
 	}
 	
 	

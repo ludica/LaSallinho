@@ -76,7 +76,10 @@ public class LaSallinho {
 			 */
 			for (int j = (int) (bounds.y + 1) / Constantes.BLOCO; j <= (int) (bounds.y + bounds.height - 1) / Constantes.BLOCO; j++) {
 				int i = (int) ((bounds.x - Constantes.VELOCIDADE) / Constantes.BLOCO);
-				if (layerCollision.getCell(i, j) != null) {
+				// A propriedade teto é usada somente no "morro" proximo a vila. Para La Sallinho nao ficar batendo no topo dos
+				// blocos no topo do morro.
+				if (layerCollision.getCell(i, j) != null && !layerCollision.getCell(i, j).getTile().getProperties().containsKey("nuvem")
+						&& !layerCollision.getCell(i, j).getTile().getProperties().containsKey("teto")) {
 					Rectangle solido = new Rectangle(i * Constantes.BLOCO, j * Constantes.BLOCO, Constantes.BLOCO, Constantes.BLOCO);
 					parede.add(solido);
 				}
@@ -118,7 +121,10 @@ public class LaSallinho {
 			 */
 			for (int j = (int) (bounds.y + 1) / Constantes.BLOCO; j <= (int) (bounds.y + bounds.height - 1) / Constantes.BLOCO; j++) {
 				int i = (int) ((bounds.x + bounds.width + Constantes.VELOCIDADE) / Constantes.BLOCO);
-				if (layerCollision.getCell(i, j) != null) {
+				// A propriedade teto é usada somente no "morro" proximo a vila. Para La Sallinho nao ficar batendo no topo dos
+				// blocos no topo do morro.
+				if (layerCollision.getCell(i, j) != null && !layerCollision.getCell(i, j).getTile().getProperties().containsKey("nuvem")
+						&& !layerCollision.getCell(i, j).getTile().getProperties().containsKey("teto")) {
 					Rectangle solido = new Rectangle(i * Constantes.BLOCO, j * Constantes.BLOCO, Constantes.BLOCO, Constantes.BLOCO);
 					parede.add(solido);
 				}
@@ -170,7 +176,9 @@ public class LaSallinho {
 			 */
 			for (int i = (int) (bounds.x + 1) / Constantes.BLOCO; i <= (int) (bounds.x + bounds.width - 1) / Constantes.BLOCO; i++) {
 				int j = (int) ((bounds.y + bounds.height + Constantes.UPFORCE) / Constantes.BLOCO);
-				if (layerCollision.getCell(i, j) != null) {
+				// A propriedade teto é usada somente no "morro" proximo a vila. Para La Sallinho nao ficar batendo no topo dos
+				// blocos no topo do morro.
+				if (layerCollision.getCell(i, j) != null && !layerCollision.getCell(i, j).getTile().getProperties().containsKey("teto")) {
 					Rectangle solido = new Rectangle(i * Constantes.BLOCO, j * Constantes.BLOCO, Constantes.BLOCO, Constantes.BLOCO);
 					teto.add(solido);
 				}
@@ -201,7 +209,12 @@ public class LaSallinho {
 		for (int i = (int) (bounds.x + 1) / Constantes.BLOCO; i <= (int) (bounds.x + bounds.width - 1) / Constantes.BLOCO; i++) {
 			int j = (int) ((bounds.y - Constantes.GRAVIDADE) / Constantes.BLOCO);
 			if (layerCollision.getCell(i, j) != null) {
-				Rectangle solido = new Rectangle(i * Constantes.BLOCO, j * Constantes.BLOCO, Constantes.BLOCO, Constantes.BLOCO);
+				Rectangle solido;
+				// checando se é uma nuvem...
+				if(layerCollision.getCell(i, j).getTile().getProperties().containsKey("nuvem")){
+					solido = new Rectangle(i * Constantes.BLOCO, j * Constantes.BLOCO, Constantes.BLOCO, 15f);
+				} else
+				solido = new Rectangle(i * Constantes.BLOCO, j * Constantes.BLOCO, Constantes.BLOCO, Constantes.BLOCO);
 				chao.add(solido);
 			}
 		}

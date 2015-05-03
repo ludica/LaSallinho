@@ -86,7 +86,7 @@ public class MainMenu implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				// lsGame.setScreen(lsGame.getGameScreen());
-				lsGame.setScreen(lsGame.getGameScreen());
+				lsGame.setScreen(lsGame.getDemoScreen());
 			}
 		});
 

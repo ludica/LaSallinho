@@ -43,7 +43,8 @@ public class Carregando implements Screen{
 	 */
 	private void carregarTelas(){
 		lsGame.setMenuPrincipal(new MainMenu(lsGame));
-		lsGame.setGameScreen(new GameScreen(lsGame));
+		//lsGame.setGameScreen(new GameScreen(lsGame));
+		lsGame.setDemoScreen(new DemoScreen(lsGame));
 		lsGame.setGameOver(new GameOver(lsGame));
 	}
 	/**

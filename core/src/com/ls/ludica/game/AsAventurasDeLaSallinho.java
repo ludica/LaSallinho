@@ -22,6 +22,7 @@ public class AsAventurasDeLaSallinho extends Game {
 
 	// Telas
 	private Screen gameScreen;
+	private Screen demoScreen;
 	private Screen menuPrincipal;
 	private Screen selecionarMapa;
 	private Screen gameOver;
@@ -95,6 +96,14 @@ public class AsAventurasDeLaSallinho extends Game {
 
 	public void setMenuSkin(Skin menuSkin) {
 		this.menuSkin = menuSkin;
+	}
+
+	public Screen getDemoScreen() {
+		return demoScreen;
+	}
+
+	public void setDemoScreen(Screen demoScreen) {
+		this.demoScreen = demoScreen;
 	}
 	
 }
