@@ -16,10 +16,9 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.ls.ludica.game.AsAventurasDeLaSallinho;
-import com.ls.ludica.game.Constantes;
 import com.ls.ludica.personagens.Fase;
 import com.ls.ludica.personagens.Item;
-import com.ls.ludica.personagens.LaSalinho;
+import com.ls.ludica.personagens.LaSallinho;
 import com.ls.ludica.personagens.Monstro;
 
 /**
@@ -37,8 +36,11 @@ public class GameScreen implements Screen {
 	public AsAventurasDeLaSallinho lsGame;
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
-	public LaSalinho laSalinho;
+	public LaSallinho laSalinho;
 	private boolean colidiu = false;
+	
+	private int larguraCamera;
+	private int alturaCamera;
 	
 	// Campo para debug 
 	private ShapeRenderer debugRenderer = new ShapeRenderer();
@@ -55,13 +57,16 @@ public class GameScreen implements Screen {
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, fase.LARGURA_BLOCO * 20, fase.ALTURA_BLOCO * 10);
+		// Exibir 20x10 blocos
+		larguraCamera = fase.LARGURA_BLOCO * 20;
+		alturaCamera = fase.ALTURA_BLOCO * 10;
+		camera.setToOrtho(false, larguraCamera, alturaCamera);
 		
 		batch = new SpriteBatch();
 		
-		laSalinho = new LaSalinho();
-		laSalinho.bounds.x = Constantes.X_INICIAL;
-		laSalinho.bounds.y = Constantes.Y_INICIAL;
+		laSalinho = new LaSallinho();
+		laSalinho.bounds.x = fase.xInicial;
+		laSalinho.bounds.y = fase.yInicial;
 		pontos = 0;
 	}
 
@@ -79,8 +84,8 @@ public class GameScreen implements Screen {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			LaSalinho.PerdeVida();
-			laSalinho = new LaSalinho();
+			laSalinho.PerdeVida();
+			laSalinho.resetar(fase.xInicial,fase.yInicial);
 			colidiu = false;
 		}
 		/*
@@ -101,7 +106,7 @@ public class GameScreen implements Screen {
 		laSalinho.setStateTime(laSalinho.getStateTime() + delta);
 		TextureRegion frame = laSalinho.Imagem();
 		
-		if(LaSalinho.isDireita){
+		if(laSalinho.isDireita){
 			if(frame.isFlipX()) frame.flip(true, false);
 		}else{
 			if(!frame.isFlipX()) frame.flip(true, false);
@@ -147,11 +152,11 @@ public class GameScreen implements Screen {
 		renderer.render(fase.getCamadaDaFrente());
 		
 		if (laSalinho.bounds.y < 0) {
-			LaSalinho.PerdeVida();
-			laSalinho = new LaSalinho();
+			laSalinho.PerdeVida();
+			laSalinho.resetar(fase.xInicial,fase.yInicial);
 		}
-		if(LaSalinho.vidas == 0){
-			LaSalinho.vidas = 5;
+		if(laSalinho.vidas == 0){
+			laSalinho.vidas = 5;
 			pontos = 0;
 			biblias = 0;
 			fase.resetarListaItem();
@@ -163,7 +168,44 @@ public class GameScreen implements Screen {
 			drawDebug(i.getBounds(),Color.RED);
 		//System.out.println("Vidas: "+LaSalinho.vidas+" Pontos: "+pontos+" Biblias: "+bibliasColetadas+"/"+biblias);
 	}
+	
+	/**
+	 * 
+	 * Enquadra a camera para seguir La Sallinho e evitar que ela nao saia das margens da fase
+	 * 
+	 * @param lsBloco
+	 */
+	private void enquadrarCamera(Rectangle r) {
+		if (r.y >= alturaCamera / 2) {
+			camera.position.y = r.y;
+		} else {
+			camera.position.y = alturaCamera / 2;
+		}
 
+		if (r.x >= larguraCamera / 2 && r.x <= fase.LARGURA_MAPA - larguraCamera / 2) {
+			camera.position.x = r.x;
+		} else {
+			if (r.x <= (fase.LARGURA_MAPA / 2)) {
+				camera.position.x = larguraCamera / 2;
+			} else {
+				camera.position.x = fase.LARGURA_MAPA - larguraCamera / 2;
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * Metodo para debuggar as colisoes.
+	 * 
+	 */
+	private void drawDebug(Rectangle bounds, Color color) {
+		debugRenderer.setProjectionMatrix(camera.combined);
+		debugRenderer.begin(ShapeType.Line);
+		debugRenderer.setColor(color);
+		debugRenderer.rect(bounds.x, bounds.y, bounds.width, bounds.height);
+		debugRenderer.end();
+	}
+	
 	@Override
 	public void resize(int width, int height) {
 
@@ -193,42 +235,5 @@ public class GameScreen implements Screen {
 	@Override
 	public void dispose() {
 		// Ver hide()
-	}
-	
-	/**
-	 * 
-	 * Enquadra a camera para seguir La Sallinho e evitar que ela nao saia das margens da fase
-	 * 
-	 * @param lsBloco
-	 */
-	private void enquadrarCamera(Rectangle r) {
-		if (r.y >= Constantes.ALTURA_TELA / 2) {
-			camera.position.y = r.y;
-		} else {
-			camera.position.y = Constantes.ALTURA_TELA / 2;
-		}
-
-		if (r.x >= Constantes.LARGURA_TELA / 2 && r.x <= Constantes.LARGURA_MAP - Constantes.LARGURA_TELA / 2) {
-			camera.position.x = r.x;
-		} else {
-			if (r.x <= (Constantes.LARGURA_MAP/2)) {
-				camera.position.x = Constantes.LARGURA_TELA / 2;
-			} else {
-				camera.position.x = Constantes.LARGURA_MAP - Constantes.LARGURA_TELA / 2;
-			}
-		}
-	}
-	
-	/**
-	 * 
-	 * Metodo para debuggar as colisoes.
-	 * 
-	 */
-	private void drawDebug(Rectangle bounds, Color color) {
-		debugRenderer.setProjectionMatrix(camera.combined);
-		debugRenderer.begin(ShapeType.Line);
-		debugRenderer.setColor(color);
-		debugRenderer.rect(bounds.x, bounds.y, bounds.width, bounds.height);
-		debugRenderer.end();
 	}
 }

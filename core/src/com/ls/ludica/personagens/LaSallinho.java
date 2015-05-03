@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -12,20 +11,20 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.ls.ludica.game.Constantes;
 
-public class LaSalinho {
+public class LaSallinho {
 	/*
 	 * Se houver tempo:
 	 * 
 	 * Criar vetores de posicao, aceleracao e velocidade para uma movimentacao mais suave.
 	 * 
 	 */
-	public static int vidas = 5;
-	public static int pontos = 0;
-	public static boolean isJump = false;
-	public static boolean isChao = true;
-	public static boolean isDireita = true;
-	public static boolean isMovendo = false;
-	public static float maxJump;
+	public int vidas = 5;
+	public int pontos = 0;
+	public boolean pulando = false;
+	public boolean noChao = true;
+	public boolean isDireita = true;
+	public boolean movendo = false;
+	public float puloMaximo;
 
 	public Rectangle bounds;
 	
@@ -43,7 +42,7 @@ public class LaSalinho {
 	private float stateTime = 0;
 	
 
-	public LaSalinho() {
+	public LaSallinho() {
 		textureAtlas = new TextureAtlas(Gdx.files.internal("LaSallinho.pack"));
 		stand = new Animation(0,textureAtlas.findRegion("lasallinho001"));
 		jump = new Animation(0,textureAtlas.findRegion("lasallinho006"));
@@ -53,7 +52,7 @@ public class LaSalinho {
 				textureAtlas.findRegion("lasallinho004"));
 		walk.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
 		
-		bounds = new Rectangle(Constantes.X_INICIAL, Constantes.Y_INICIAL, Constantes.TILESCALE, (236f/146f)*Constantes.TILESCALE);
+		bounds = new Rectangle(Constantes.X_INICIAL, Constantes.Y_INICIAL, Constantes.BLOCO, (236f/146f)*Constantes.BLOCO);
 	}
 
 	/**
@@ -63,11 +62,11 @@ public class LaSalinho {
 	 * @param camadaColisao
 	 */
 	public void Mover(TiledMapTileLayer layerCollision) {
-		if (!Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.A)) isMovendo = false;
+		if (!Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.A)) movendo = false;
 		ArrayList<Rectangle> parede = new ArrayList<Rectangle>();
 
 		if (Gdx.input.isKeyPressed(Keys.A)) {
-			isMovendo = true;
+			movendo = true;
 			isDireita = false;
 			parede.clear();
 			/*
@@ -75,10 +74,10 @@ public class LaSalinho {
 			 * blocos de colisão
 			 * 
 			 */
-			for (int j = (int) (bounds.y + 1) / Constantes.TILESCALE; j <= (int) (bounds.y + bounds.height - 1) / Constantes.TILESCALE; j++) {
-				int i = (int) ((bounds.x - Constantes.VELOCIDADE) / Constantes.TILESCALE);
+			for (int j = (int) (bounds.y + 1) / Constantes.BLOCO; j <= (int) (bounds.y + bounds.height - 1) / Constantes.BLOCO; j++) {
+				int i = (int) ((bounds.x - Constantes.VELOCIDADE) / Constantes.BLOCO);
 				if (layerCollision.getCell(i, j) != null) {
-					Rectangle solido = new Rectangle(i * Constantes.TILESCALE, j * Constantes.TILESCALE, Constantes.TILESCALE, Constantes.TILESCALE);
+					Rectangle solido = new Rectangle(i * Constantes.BLOCO, j * Constantes.BLOCO, Constantes.BLOCO, Constantes.BLOCO);
 					parede.add(solido);
 				}
 			}
@@ -87,7 +86,7 @@ public class LaSalinho {
 					bounds.x -= 0.1f;
 				}
 				bounds.x = 0;
-				isMovendo = false;
+				movendo = false;
 			} else {
 				bounds.setPosition(bounds.x - Constantes.VELOCIDADE, bounds.y);
 				/*
@@ -102,14 +101,14 @@ public class LaSalinho {
 							bounds.setPosition(bounds.x - 0.1f, bounds.y);
 						}
 						bounds.setPosition(bounds.x + 0.1f, bounds.y);
-						isMovendo = false;
+						movendo = false;
 					}
 				}
 			}
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.D)) {
-			isMovendo = true;
+			movendo = true;
 			isDireita = true;
 			parede.clear();
 			/*
@@ -117,20 +116,20 @@ public class LaSalinho {
 			 * blocos de colisão
 			 * 
 			 */
-			for (int j = (int) (bounds.y + 1) / Constantes.TILESCALE; j <= (int) (bounds.y + bounds.height - 1) / Constantes.TILESCALE; j++) {
-				int i = (int) ((bounds.x + bounds.width + Constantes.VELOCIDADE) / Constantes.TILESCALE);
+			for (int j = (int) (bounds.y + 1) / Constantes.BLOCO; j <= (int) (bounds.y + bounds.height - 1) / Constantes.BLOCO; j++) {
+				int i = (int) ((bounds.x + bounds.width + Constantes.VELOCIDADE) / Constantes.BLOCO);
 				if (layerCollision.getCell(i, j) != null) {
-					Rectangle solido = new Rectangle(i * Constantes.TILESCALE, j * Constantes.TILESCALE, Constantes.TILESCALE, Constantes.TILESCALE);
+					Rectangle solido = new Rectangle(i * Constantes.BLOCO, j * Constantes.BLOCO, Constantes.BLOCO, Constantes.BLOCO);
 					parede.add(solido);
 				}
 			}
-			if (bounds.x >= Constantes.LARGURA_MAP - bounds.width
+			if (bounds.x >= Constantes.LARGURA_MAPA - bounds.width
 					- Constantes.VELOCIDADE) {
-				while (bounds.x == Constantes.LARGURA_MAP - bounds.width) {
+				while (bounds.x == Constantes.LARGURA_MAPA - bounds.width) {
 					bounds.x += 0.1f;
 				}
-				bounds.x = Constantes.LARGURA_MAP - bounds.width;
-				isMovendo = false;
+				bounds.x = Constantes.LARGURA_MAPA - bounds.width;
+				movendo = false;
 			} else {
 				bounds.setPosition(bounds.x + Constantes.VELOCIDADE, bounds.y);
 				/*
@@ -145,34 +144,34 @@ public class LaSalinho {
 							bounds.setPosition(bounds.x + 0.1f, bounds.y);
 						}
 						bounds.setPosition(bounds.x - 0.1f, bounds.y);
-						isMovendo = false;
+						movendo = false;
 					}
 				}
 			}
 		}
 		if(Gdx.input.isKeyPressed(Keys.A) && Gdx.input.isKeyPressed(Keys.D)){
-			isMovendo = false;
+			movendo = false;
 		}
 	}
 
 	public void Pular(TiledMapTileLayer layerCollision) {
 		ArrayList<Rectangle> teto = new ArrayList<Rectangle>();
-		if (isChao) {
-			LaSalinho.maxJump = bounds.y + Constantes.MAXJUMP;
+		if (noChao) {
+			puloMaximo = bounds.y + Constantes.MAXJUMP;
 		}
-		if ((Gdx.input.isKeyPressed(Keys.SPACE) && isChao) || isJump) {
-			isJump = true;
-			isChao = false;
+		if ((Gdx.input.isKeyPressed(Keys.SPACE) && noChao) || pulando) {
+			pulando = true;
+			noChao = false;
 			teto.clear();
 			/*
 			 * Pega os blocos, tiles, próximos de La Sallinho, em cima e insere na lista de possíveis 
 			 * blocos de colisão
 			 * 
 			 */
-			for (int i = (int) (bounds.x + 1) / Constantes.TILESCALE; i <= (int) (bounds.x + bounds.width - 1) / Constantes.TILESCALE; i++) {
-				int j = (int) ((bounds.y + bounds.height + Constantes.UPFORCE) / Constantes.TILESCALE);
+			for (int i = (int) (bounds.x + 1) / Constantes.BLOCO; i <= (int) (bounds.x + bounds.width - 1) / Constantes.BLOCO; i++) {
+				int j = (int) ((bounds.y + bounds.height + Constantes.UPFORCE) / Constantes.BLOCO);
 				if (layerCollision.getCell(i, j) != null) {
-					Rectangle solido = new Rectangle(i * Constantes.TILESCALE, j * Constantes.TILESCALE, Constantes.TILESCALE, Constantes.TILESCALE);
+					Rectangle solido = new Rectangle(i * Constantes.BLOCO, j * Constantes.BLOCO, Constantes.BLOCO, Constantes.BLOCO);
 					teto.add(solido);
 				}
 			}
@@ -182,11 +181,11 @@ public class LaSalinho {
 			 */
 			for (Rectangle tetoParte : teto) {
 				if (tetoParte.overlaps(bounds)) {
-					isJump = false;
+					pulando = false;
 				}
 			}
-			if (bounds.y >= LaSalinho.maxJump) {
-				isJump = false;
+			if (bounds.y >= puloMaximo) {
+				pulando = false;
 			}
 		}
 	}
@@ -199,14 +198,14 @@ public class LaSalinho {
 		 * blocos de colisão
 		 * 
 		 */
-		for (int i = (int) (bounds.x + 1) / Constantes.TILESCALE; i <= (int) (bounds.x + bounds.width - 1) / Constantes.TILESCALE; i++) {
-			int j = (int) ((bounds.y - Constantes.GRAVIDADE) / Constantes.TILESCALE);
+		for (int i = (int) (bounds.x + 1) / Constantes.BLOCO; i <= (int) (bounds.x + bounds.width - 1) / Constantes.BLOCO; i++) {
+			int j = (int) ((bounds.y - Constantes.GRAVIDADE) / Constantes.BLOCO);
 			if (layerCollision.getCell(i, j) != null) {
-				Rectangle solido = new Rectangle(i * Constantes.TILESCALE, j * Constantes.TILESCALE, Constantes.TILESCALE, Constantes.TILESCALE);
+				Rectangle solido = new Rectangle(i * Constantes.BLOCO, j * Constantes.BLOCO, Constantes.BLOCO, Constantes.BLOCO);
 				chao.add(solido);
 			}
 		}
-		isChao = false;
+		noChao = false;
 		bounds.setPosition(bounds.x, bounds.y - Constantes.GRAVIDADE);
 		/*
 		 * Aqui a colisao é checada. Só os blocos embaixo de La Sallinho sao checados.
@@ -219,7 +218,7 @@ public class LaSalinho {
 					bounds.setPosition(bounds.x, bounds.y - 0.1f);
 				}
 				bounds.setPosition(bounds.x, bounds.y + 0.1f);
-				isChao = true;
+				noChao = true;
 			}
 		}
 	}
@@ -230,9 +229,9 @@ public class LaSalinho {
 	 * @return
 	 */
 	public TextureRegion Imagem(){
-		if(isJump) state = State.JUMPING;
-		else if(!isChao) state = State.DOWNING;
-		else if(!isMovendo) state = State.STANDING;
+		if(pulando) state = State.JUMPING;
+		else if(!noChao) state = State.DOWNING;
+		else if(!movendo) state = State.STANDING;
 		else state = State.WALKING;
 		
 		switch (state){
@@ -257,20 +256,20 @@ public class LaSalinho {
 	 */
 	public void Teleporte (TiledMapTileLayer layerTeleporte){
 		if(state == State.STANDING){	
-			int x = (int) bounds.x/Constantes.TILESCALE;
-			int y = (int) bounds.y/Constantes.TILESCALE;
+			int x = (int) bounds.x/Constantes.BLOCO;
+			int y = (int) bounds.y/Constantes.BLOCO;
 			int id = 0;
 			if (layerTeleporte.getCell(x, y) != null) {
 				id = layerTeleporte.getCell(x, y).getTile().getId();
 			}
 			
-			for (int i = 0; i < Constantes.TILESHORIZONTAL; i++) {
-				for (int j = 0; j < Constantes.TILESVERTICAL; j++) {
+			for (int i = 0; i < Constantes.LARGURA_MAPA_EM_BLOCO; i++) {
+				for (int j = 0; j < Constantes.ALTURA_MAPA_EM_BLOCO; j++) {
 					if (layerTeleporte.getCell(i, j) != null) {
 						if(i!=x && i!=x-1 && i!=x+1 && j!=y){
 							if(layerTeleporte.getCell(i, j).getTile().getId() == id){
-								bounds.x = i*Constantes.TILESCALE;
-								bounds.y = j*Constantes.TILESCALE;
+								bounds.x = i*Constantes.BLOCO;
+								bounds.y = j*Constantes.BLOCO;
 							}
 						}
 					}
@@ -298,8 +297,19 @@ public class LaSalinho {
 		return false;
 	}
 
-	public static void PerdeVida() {
-		LaSalinho.vidas -= 1;
+	public void resetar(int x, int y){
+		vidas = 5;
+		pontos = 0;
+		pulando = false;
+		noChao = true;
+		isDireita = true;
+		movendo = false;
+		bounds.x = x;
+		bounds.y = y;
+	}
+	
+	public void PerdeVida() {
+		vidas -= 1;
 	}
 
 	public float getStateTime() {

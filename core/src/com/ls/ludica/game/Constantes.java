@@ -15,25 +15,22 @@ public class Constantes {
 	 * 
 	 */
 
-	public static final int TILESCALE = 70;        // tamanho de um bloco
-	public static final int TILESHORIZONTAL = 200; // largura do mapa (em quantidade de blocos)
-	public static final int TILESVERTICAL = 32;    // altura do mapa (em quantidade de blocos)
-	public static final int LARGURA_TELA = TILESCALE * 20;
-	public static final int ALTURA_TELA = TILESCALE * 10;
+	public static final int BLOCO = 70;        // tamanho de um bloco
+	public static final int LARGURA_MAPA_EM_BLOCO = 200; // largura do mapa (em quantidade de blocos)
+	public static final int ALTURA_MAPA_EM_BLOCO = 32;    // altura do mapa (em quantidade de blocos)
+	public static final int LARGURA_TELA = BLOCO * 20;
+	public static final int ALTURA_TELA = BLOCO * 10;
 	
 	// A informacao da posicao Inicial de La Sallinho na fase deve vim como atributo do mapa
-	public static final int X_INICIAL = TILESCALE * 11; // posicao X inicial do La Sassinho
-	public static final int Y_INICIAL = TILESCALE * 17; // posicao Y inicial do La Sallinho
+	public static final int X_INICIAL = BLOCO * 11; // posicao X inicial do La Sassinho
+	public static final int Y_INICIAL = BLOCO * 17; // posicao Y inicial do La Sallinho
 	
 	public static final float GRAVIDADE = 12f;
 	public static final float UPFORCE = GRAVIDADE + 10f;
 	public static final float VELOCIDADE = 10f;
         
-	public static final float MAXJUMP = TILESCALE * 4.5f;
+	public static final float MAXJUMP = BLOCO * 4.5f;
 	
-	public static final int IDITEM1 = 1;
-	public static final int IDITEM2 = 2;
-	
-	public static final int LARGURA_MAP = TILESCALE * TILESHORIZONTAL; // largura do mapa (em px)
-	public static final int ALTURA_MAP = TILESCALE * TILESVERTICAL;    // altura do mapa (em px)
+	public static final int LARGURA_MAPA = BLOCO * LARGURA_MAPA_EM_BLOCO; // largura do mapa (em px)
+	public static final int ALTURA_MAPA = BLOCO * ALTURA_MAPA_EM_BLOCO;    // altura do mapa (em px)
 }

@@ -43,10 +43,10 @@ public class Monstro {
 		}
 		ArrayList<Rectangle> parede = new ArrayList<Rectangle>();
 		parede.clear();
-		for (int j = (int) (bounds.y + 1) / Constantes.TILESCALE; j <= (int) (bounds.y + bounds.height - 1) / Constantes.TILESCALE; j++) {
-			int i = (int) ((bounds.x + largura + (velocidade*direcao)) / Constantes.TILESCALE);
+		for (int j = (int) (bounds.y + 1) / Constantes.BLOCO; j <= (int) (bounds.y + bounds.height - 1) / Constantes.BLOCO; j++) {
+			int i = (int) ((bounds.x + largura + (velocidade*direcao)) / Constantes.BLOCO);
 			if (layerCollision.getCell(i, j) != null) {
-				Rectangle solido = new Rectangle(i * Constantes.TILESCALE, j * Constantes.TILESCALE, Constantes.TILESCALE, Constantes.TILESCALE);
+				Rectangle solido = new Rectangle(i * Constantes.BLOCO, j * Constantes.BLOCO, Constantes.BLOCO, Constantes.BLOCO);
 				parede.add(solido);
 			}
 		}
@@ -74,10 +74,10 @@ public class Monstro {
 	public void gravidade(TiledMapTileLayer layerCollision) {
 		ArrayList<Rectangle> chao = new ArrayList<Rectangle>();
 		chao.clear();
-		for (int i = (int) (bounds.x + 1) / Constantes.TILESCALE; i <= (int) (bounds.x + bounds.width - 1) / Constantes.TILESCALE; i++) {
-			int j = (int) ((bounds.y - Constantes.GRAVIDADE) / Constantes.TILESCALE);
+		for (int i = (int) (bounds.x + 1) / Constantes.BLOCO; i <= (int) (bounds.x + bounds.width - 1) / Constantes.BLOCO; i++) {
+			int j = (int) ((bounds.y - Constantes.GRAVIDADE) / Constantes.BLOCO);
 			if (layerCollision.getCell(i, j) != null) {
-				Rectangle solido = new Rectangle(i * Constantes.TILESCALE, j * Constantes.TILESCALE, Constantes.TILESCALE, Constantes.TILESCALE);
+				Rectangle solido = new Rectangle(i * Constantes.BLOCO, j * Constantes.BLOCO, Constantes.BLOCO, Constantes.BLOCO);
 				chao.add(solido);
 			}
 		}

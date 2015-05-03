@@ -26,9 +26,14 @@ public class Fase {
 	private List<Item> itemLista = new ArrayList<Item>();
 	private List<Monstro> mob = new ArrayList<Monstro>();
 	
-	// Rever se isso deve ser hardcoded
+	public float gravidade = 12;
+	
 	private int camadaDeFundo[] = {0,1};
 	private int camadaDaFrente[] = {2};
+	
+	// Hardcoded, o mapa deve fornecer essa informacao
+	public int xInicial;
+	public int yInicial;
 	
 	public Fase(Map mapa){
 		camadaColisao = (TiledMapTileLayer) mapa.getLayers().get("Collision");
@@ -47,6 +52,9 @@ public class Fase {
 				
 		LARGURA_MAPA = LARGURA_MAPA_EM_BLOCO * LARGURA_BLOCO;
 		ALTURA_MAPA = ALTURA_MAPA_EM_BLOCO * ALTURA_BLOCO;
+		
+		xInicial = LARGURA_BLOCO * 11;
+		yInicial = ALTURA_BLOCO * 17;
 		
 		carregarListas();
 		
