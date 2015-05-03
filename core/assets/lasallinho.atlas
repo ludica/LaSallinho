@@ -1,0 +1,61 @@
+
+lasallinho.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+lasallinho000
+  rotate: false
+  xy: 1, 1
+  size: 70, 123
+  orig: 70, 123
+  offset: 0, 0
+  index: -1
+lasallinho001
+  rotate: false
+  xy: 73, 1
+  size: 70, 123
+  orig: 70, 123
+  offset: 0, 0
+  index: -1
+lasallinho002
+  rotate: false
+  xy: 145, 1
+  size: 70, 123
+  orig: 70, 123
+  offset: 0, 0
+  index: -1
+lasallinho003
+  rotate: false
+  xy: 217, 1
+  size: 70, 123
+  orig: 70, 123
+  offset: 0, 0
+  index: -1
+lasallinho004
+  rotate: false
+  xy: 289, 1
+  size: 70, 123
+  orig: 70, 123
+  offset: 0, 0
+  index: -1
+lasallinho006
+  rotate: false
+  xy: 361, 16
+  size: 70, 108
+  orig: 70, 108
+  offset: 0, 0
+  index: -1
+lasallinho005
+  rotate: false
+  xy: 433, 19
+  size: 70, 105
+  orig: 70, 105
+  offset: 0, 0
+  index: -1
+lasallinho007
+  rotate: false
+  xy: 505, 19
+  size: 70, 105
+  orig: 70, 105
+  offset: 0, 0
+  index: -1

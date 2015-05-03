@@ -38,13 +38,17 @@ public class LaSallinho {
 	Animation jump;
 	Animation down;
 	Animation walk;
+	
+	public int correcaoLargura = -5;
+	public int correcaoPosX = 10;
+	
 	// Usado para animacao
 	private float stateTime = 0;
 	
 
 	public LaSallinho() {
-		textureAtlas = new TextureAtlas(Gdx.files.internal("LaSallinho.pack"));
-		stand = new Animation(0,textureAtlas.findRegion("lasallinho001"));
+		textureAtlas = new TextureAtlas(Gdx.files.internal("LaSallinho.atlas"));
+		stand = new Animation(0,textureAtlas.findRegion("lasallinho000"));
 		jump = new Animation(0,textureAtlas.findRegion("lasallinho006"));
 		down = new Animation(0,textureAtlas.findRegion("lasallinho007"));
 		walk = new Animation(0.1f,textureAtlas.findRegion("lasallinho001"),
