@@ -16,7 +16,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.ls.ludica.game.AsAventurasDeLaSallinho;
 import com.ls.ludica.personagens.Fase;
+import com.ls.ludica.personagens.Item;
 import com.ls.ludica.personagens.LaSallinho;
+import com.ls.ludica.personagens.Monstro;
 
 public class DemoScreen implements Screen {
 
@@ -73,7 +75,10 @@ public class DemoScreen implements Screen {
 			laSalinho.resetar(fase.xInicial,fase.yInicial);
 			colidiu = false;
 		}
-		
+		if((laSalinho.bounds.x == 196 * fase.ALTURA_BLOCO) && (laSalinho.bounds.y == 15 * fase.ALTURA_BLOCO) 
+				/*&& fase.getItemLista().get(0).foiColetado()*/){
+			System.out.println("Entrou");
+		}
 		
 		laSalinho.Mover(fase.getCamadaColisao());
 		laSalinho.Pular(fase.getCamadaColisao());
@@ -94,11 +99,37 @@ public class DemoScreen implements Screen {
 		}
 		
 		renderer.render(fase.getCamadaAreaSecreta());
-		renderer.render(fase.getCamadaTampaSecreta());
+		//renderer.render(fase.getCamadaTampaSecreta());
 		renderer.render(fase.getCamadaDeFundo());
 		
 		batch.begin();
 		batch.draw(frame, laSalinho.bounds.x, laSalinho.bounds.y, laSalinho.bounds.width, laSalinho.bounds.height);
+		
+		/*
+		 * Checagem para colisao com itens
+		 */
+		for(Item item : fase.getItemLista()){
+			//p = item.coletar(laSalinho.bounds);
+			item.coletar(laSalinho.bounds);
+			//pontos += p;
+			//bibliasColetadas += p == ItemFactory.BIBLIA_PTS ? 1 : 0;
+			if(!item.foiColetado()){
+				Rectangle b = item.getBounds();
+				batch.draw(item.getSprite(), b.x, b.y, b.width, b.height);
+			}
+		}
+		/*
+		 * Checagem para colisao com monstros
+		 */
+		for(Monstro inimigo : fase.getMob()){
+			Rectangle bounds = inimigo.getBounds();
+			batch.draw(inimigo.getSprite(), bounds.x, bounds.y, bounds.width, bounds.height);
+			inimigo.gravidade(fase.getCamadaColisao());
+			inimigo.mover(fase.getCamadaColisao());
+			if(laSalinho.InimigoColide(bounds)){
+				colidiu = true;
+			}
+		}
 		
 		batch.end();
 		
@@ -115,7 +146,8 @@ public class DemoScreen implements Screen {
 		}
 		
 		drawDebug(laSalinho.bounds,Color.GREEN);
-
+		for(Monstro i : fase.getMob())
+			drawDebug(i.getBounds(),Color.RED);
 	}
 	
 	private void enquadrarCamera(Rectangle r) {

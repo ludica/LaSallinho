@@ -37,6 +37,8 @@ public class Fase {
 	public int xInicial;
 	public int yInicial;
 	
+	public static boolean abrirAreaSecreta = false;
+	
 	public Fase(Map mapa){
 		//camadaColisao = (TiledMapTileLayer) mapa.getLayers().get("Collision");
 		//camadaItem = (TiledMapTileLayer) mapa.getLayers().get("Itens");
@@ -44,6 +46,8 @@ public class Fase {
 		//camadaInimigo = (TiledMapTileLayer) mapa.getLayers().get("Inimigos");
 		
 		camadaColisao = (TiledMapTileLayer) mapa.getLayers().get("colisao");
+		camadaItem = (TiledMapTileLayer) mapa.getLayers().get("itens");
+		camadaInimigo = (TiledMapTileLayer) mapa.getLayers().get("monstros");
 		
 		MapProperties prop = mapa.getProperties();
 		// Largura e altura do mapa em numero de blocos
@@ -60,7 +64,9 @@ public class Fase {
 		xInicial = LARGURA_BLOCO * 1;
 		yInicial = ALTURA_BLOCO * 6;
 		
-		//carregarListas();
+		
+		
+		carregarListas();
 		
 	}
 	
@@ -73,6 +79,10 @@ public class Fase {
 		FabricaItem fabricaItem = new FabricaItem(LARGURA_BLOCO,ALTURA_BLOCO);
 		FabricaMonstro fabricaMonstro = new FabricaMonstro();
 		int itemId;
+		// A fase de demonstracao só tem a chave de item, logo:
+		//Item item = fabricaItem.criarItem(1, 192 * LARGURA_BLOCO, 1 * ALTURA_BLOCO);
+		//itemLista.add(item);
+		
 		for(int i = 0; i <= LARGURA_MAPA; i++){
 			for(int j = 0; j <= ALTURA_MAPA; j++){
 				// Carregando os itens
@@ -83,11 +93,13 @@ public class Fase {
 				}
 				// Carregando os monstros
 				if(camadaInimigo.getCell(i, j) != null){
-					Monstro inimigo = fabricaMonstro.criarMonstro(0, i * LARGURA_BLOCO, j * ALTURA_BLOCO);
+					Monstro inimigo = fabricaMonstro.criarMonstro(camadaInimigo.getCell(i, j).getTile().getId(), 
+							i * LARGURA_BLOCO, j * ALTURA_BLOCO);
 					mob.add(inimigo);
 				}
 			}
 		}
+		
 	}
 	/**
 	 * 

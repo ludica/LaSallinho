@@ -1,0 +1,47 @@
+
+monstros.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ghost
+  rotate: false
+  xy: 1, 39
+  size: 51, 73
+  orig: 51, 73
+  offset: 0, 0
+  index: -1
+ghost_normal
+  rotate: false
+  xy: 54, 39
+  size: 51, 73
+  orig: 51, 73
+  offset: 0, 0
+  index: -1
+flyFly1
+  rotate: false
+  xy: 1, 1
+  size: 72, 36
+  orig: 72, 36
+  offset: 0, 0
+  index: -1
+flyFly2
+  rotate: false
+  xy: 107, 81
+  size: 75, 31
+  orig: 75, 31
+  offset: 0, 0
+  index: -1
+snake
+  rotate: false
+  xy: 107, 56
+  size: 63, 23
+  orig: 63, 23
+  offset: 0, 0
+  index: -1
+snake_walk
+  rotate: false
+  xy: 184, 89
+  size: 63, 23
+  orig: 63, 23
+  offset: 0, 0
+  index: -1

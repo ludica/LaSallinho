@@ -2,6 +2,7 @@ package com.ls.ludica.personagens;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
@@ -19,9 +20,16 @@ public class Monstro {
 	private float velocidade;
 	private float direcao = 1;
 	private float largura = 0;
+	private Animation animacao;
 
 	public Monstro(Sprite sprite, Rectangle bounds, float velocidade) {
 		this.sprite = sprite;
+		this.bounds = bounds;
+		this.velocidade = velocidade;
+	}
+	public Monstro(Animation animacao, Rectangle bounds, float velocidade) {
+		this.sprite = null;
+		this.animacao = animacao;
 		this.bounds = bounds;
 		this.velocidade = velocidade;
 	}

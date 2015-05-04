@@ -19,8 +19,9 @@ public class FabricaItem {
 	private int alturaBloco;
 	
 	// Identificando o item
-	private final int ESTRELA_BRONZE = 1;
+	private final int ESTRELA_BRONZE = 0; // Original: 1
 	private final int ESTRELA_OUTRO = 2;
+	private final int CHAVE_AZUL = 1;
 	
 	// Quantidade de pontos que os itens dao
 	private final int LIVRO_PTS = 50;
@@ -29,10 +30,12 @@ public class FabricaItem {
 	// Caminho para as texturas
 	private final String ESTRELA_BRONZE_TEXTURA = "itens/star_bronze.png";
 	private final String ESTRELA_OURO_TEXTURA = "itens/star_gold.png";
+	private final String CHAVE_AZUL_TEXTURA = "itens/keyBlue.png";
 	
 	// Sprites
 	private Sprite estrelaBronze;
 	private Sprite estrelaOuro;
+	private Sprite chaveAzul;
 	
 	// Caminho para os sons
 	private final String SOM_ESTRELA_BRONZE = "sons/som_livro.ogg";
@@ -52,6 +55,8 @@ public class FabricaItem {
 		estrelaOuro = new Sprite(new Texture(ESTRELA_OURO_TEXTURA));
 		// hardcoded, tirar depois
 		estrelaOuro.setSize(31, 31);
+		
+		chaveAzul = new Sprite(new Texture(CHAVE_AZUL_TEXTURA));
 		
 		somEstrelaBronze = Gdx.audio.newSound(Gdx.files.internal(SOM_ESTRELA_BRONZE));
 		somEstrelaOuro = Gdx.audio.newSound(Gdx.files.internal(SOM_ESTRELA_OURO));
@@ -77,6 +82,11 @@ public class FabricaItem {
 				bounds = new Rectangle(posX+((larguraBloco-31)/2),posY+((alturaBloco-31)/2),
 						estrelaOuro.getWidth(),estrelaOuro.getHeight());
 				item = new Item(id, estrelaBronze, LIVRO_PTS, bounds, somEstrelaBronze);
+				break;
+			case CHAVE_AZUL:
+				bounds = new Rectangle(posX,posY,
+						chaveAzul.getWidth(),chaveAzul.getHeight());
+				item = new Item(id, chaveAzul, 0, bounds, somEstrelaOuro);
 				break;
 			// Mais vindo...
 				default:
